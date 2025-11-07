@@ -13,7 +13,7 @@ def run():
     prompt = "Add beer to this image. Either a beer bottle or a beer glass where it is most suitable"
 
     if st.button("Add beer") and image_path is not None:
-        with st.spinner("Generating..."):
+        with st.spinner("Adding beer..."):
             gemini_request.edit_images(prompt, image_path.name)
 
             # Display the generated image
