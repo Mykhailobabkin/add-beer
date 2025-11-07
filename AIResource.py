@@ -495,22 +495,36 @@ class GeminiRequest:
         Args:
             prompt (str): The prompt for image editing.
             image_path (str): The path to the input image.
-            output_path (str): The path to save the edited image.
         """
-        with open(image_path, "rb") as f:
-            image_bytes = f.read()
+        try:
+            with open(image_path, "rb") as f:
+                image_bytes = f.read()
 
-        image=Image.open(image_path)
+            image = Image.open(BytesIO(image_bytes))
 
-        response = self.client.models.generate_content(
-            model=self.model,
-            contents=[prompt, image],
-        )
+            response = self.client.models.generate_content(
+                model=self.model,
+                contents=[prompt, image],
+            )
 
+            if response is None:
+                print("Error: API returned no response")
+                return None
+                
+            if not hasattr(response, 'candidates') or not response.candidates:
+                print("Error: API returned empty response")
+                return None
 
-        for part in response.candidates[0].content.parts:
-            if part.text is not None:
-                print(part.text)
-            elif part.inline_data is not None:
-                image = Image.open(BytesIO(part.inline_data.data))
-                image.save("generated_image.png")
+            for part in response.candidates[0].content.parts:
+                if part.text is not None:
+                    print(part.text)
+                elif part.inline_data is not None:
+                    edited_image = Image.open(BytesIO(part.inline_data.data))
+                    edited_image.save("generated_image.png")
+                    return "generated_image.png"
+            
+            return None
+            
+        except Exception as e:
+            print(f"An error occurred in edit_images: {e}")
+            return None

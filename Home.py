@@ -2,6 +2,8 @@ from AIResource import GeminiRequest
 import streamlit as st
 import os
 import tempfile
+from PIL import Image
+from io import BytesIO
 
 gemini_request = GeminiRequest("gemini-2.0-flash-exp")
 
@@ -20,18 +22,44 @@ def run():
                 tmp_path = tmp_file.name
             
             try:
-                # Call the edit_images method
-                gemini_request.edit_images(prompt, tmp_path)
+                # Read image bytes
+                with open(tmp_path, "rb") as f:
+                    image_bytes = f.read()
                 
-                # Check if the generated image exists
-                if os.path.exists("generated_image.png"):
-                    st.success("Beer added successfully!")
-                    st.image("generated_image.png")
+                # Open image with PIL
+                image = Image.open(BytesIO(image_bytes))
+                
+                # Call the API
+                response = gemini_request.client.models.generate_content(
+                    model=gemini_request.model,
+                    contents=[prompt, image],
+                )
+                
+                # Check if response is valid
+                if response is None:
+                    st.error("API returned no response. Please check your API key and model availability.")
+                elif not hasattr(response, 'candidates') or not response.candidates:
+                    st.error("API returned empty response. The model may not support image editing or the request failed.")
                 else:
-                    st.error("Failed to generate image. Please try again.")
+                    # Process response
+                    image_generated = False
+                    for part in response.candidates[0].content.parts:
+                        if part.text is not None:
+                            st.info(f"Model response: {part.text}")
+                        elif part.inline_data is not None:
+                            generated_image = Image.open(BytesIO(part.inline_data.data))
+                            generated_image.save("generated_image.png")
+                            st.success("Beer added successfully!")
+                            st.image("generated_image.png")
+                            image_generated = True
+                    
+                    if not image_generated:
+                        st.warning("The model returned a text response instead of an edited image. This model may not support image editing.")
                     
             except Exception as e:
                 st.error(f"An error occurred: {str(e)}")
+                import traceback
+                st.error(f"Traceback: {traceback.format_exc()}")
             
             finally:
                 # Clean up temporary file
