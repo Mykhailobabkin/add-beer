@@ -7,7 +7,7 @@ gemini_request = GeminiRequest("gemini-2.5-flash-image")
 def run(): 
     image_path = st.file_uploader("Upload an image", type=["png", "jpg", "jpeg"])
 
-    prompt = "Add beer to this image. Either a beer bottle or a beer glass where it is most suitable"
+    prompt = "Add beer to this image. Either a beer bottle or a beer glass in hand of a person where it is most suitable"
 
     if st.button("Add beer") and image_path is not None:
         with st.spinner("Adding beer..."):
