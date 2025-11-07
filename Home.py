@@ -12,8 +12,6 @@ def run():
     if st.button("Add beer") and image_path is not None:
         with st.spinner("Adding beer..."):
 
-            with open(image_path.name, "wb") as f:
-                f.write(image_path.getbuffer())
             gemini_request.edit_images(prompt, image_path.name)
 
             # Display the generated image
