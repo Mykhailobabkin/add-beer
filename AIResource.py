@@ -497,8 +497,6 @@ class GeminiRequest:
             image_path (str): The path to the input image.
             output_path (str): The path to save the edited image.
         """
-        with open(image_path, "rb") as f:
-            image_bytes = f.read()
 
         image=Image.open(image_path)
 
