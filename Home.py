@@ -16,7 +16,6 @@ def run():
 
             # Display the generated image
             st.image("generated_image.png")
-
             os.remove(image_path.name)
 
 run()
