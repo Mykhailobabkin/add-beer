@@ -20,7 +20,7 @@ def run():
 
     genchoice = st.radio("Шо ти хочеш додати?", ('Пиво', 'Срібну кнопку', 'Золоту кнопку', 'Діамантову кнопку'), horizontal=True)
 
-    if genchoice is 'Gold YouTube Button' or genchoice is 'Silver YouTube Button':
+    if genchoice is 'Срібну кнопку' or genchoice is 'Золоту кнопку' or genchoice is 'Діамантову кнопку':
         channel_name = st.text_input("Whats your channel name?")
     
     generate_image = st.button("Додати")
