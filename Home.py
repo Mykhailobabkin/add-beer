@@ -8,7 +8,7 @@ import time
 gemini_request = GeminiRequest("gemini-2.5-flash-image")
 
 def run(): 
-    st.title("Квадроберы AI")
+    st.title("Квадробєри AI")
     
     image_file = st.file_uploader("Загрузи картинку", type=["png", "jpg", "jpeg"])
 
