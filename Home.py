@@ -52,7 +52,7 @@ def run():
 
                 case 'Діамантову кнопку': 
                     with st.spinner ("Генерую..."): 
-                        time.sleep(2)
+                        time.sleep(4)
                         st.write("### Забагато Хочеш")
             
             if os.path.exists(tmp_path):
