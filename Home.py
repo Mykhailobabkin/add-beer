@@ -8,7 +8,7 @@ import tempfile
 gemini_request = GeminiRequest("gemini-2.5-flash-image")
 
 def run(): 
-    st.title("Shits and giggles")
+    st.title("Квадроберы AI")
     
     image_file = st.file_uploader("Upload an image", type=["png", "jpg", "jpeg"])
 
