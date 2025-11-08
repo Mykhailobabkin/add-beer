@@ -3,14 +3,14 @@ import streamlit as st
 import os
 
 import tempfile
-
+import time
 
 gemini_request = GeminiRequest("gemini-2.5-flash-image")
 
 def run(): 
     st.title("Квадроберы AI")
     
-    image_file = st.file_uploader("Upload an image", type=["png", "jpg", "jpeg"])
+    image_file = st.file_uploader("Загрузи картинку", type=["png", "jpg", "jpeg"])
 
     prompt_beer = "Add beer to this image. Either a beer bottle or a beer glass in hand of a person where it is most suitable"
 
@@ -18,12 +18,12 @@ def run():
 
     prompt_silver = "Give a person in a photo a silver YouTube play button award in their hands. What the award looks like: a big shiny silver play button"
 
-    genchoice = st.radio("What do you want to add?", ('Beer', 'Silver YouTube Button', 'Gold YouTube Button'), horizontal=True)
+    genchoice = st.radio("Шо ти хочеш додати?", ('Пиво', 'Срібну кнопку', 'Золоту кнопку', 'Діамантову кнопку'), horizontal=True)
 
     if genchoice is 'Gold YouTube Button' or genchoice is 'Silver YouTube Button':
         channel_name = st.text_input("Whats your channel name?")
     
-    generate_image = st.button("Add")
+    generate_image = st.button("Додати")
 
     if generate_image and image_file is not None:
             # Create a temporary file to store the uploaded image
@@ -32,17 +32,22 @@ def run():
                 tmp_path = tmp_file.name
 
             match genchoice:
-                case 'Beer':
-                    with st.spinner('Pouring a cold one...'):
+                case 'Пиво':
+                    with st.spinner('Наливаю Холодне..'):
                         gemini_request.edit_images(prompt_beer, tmp_path)
 
-                case 'Silver YouTube Button':
-                    with st.spinner('Making you famous...'):
+                case 'Срібну кнопку':
+                    with st.spinner('А чого не золоту?...'):
                         gemini_request.edit_images(prompt_silver + f"Channel name is {channel_name}", tmp_path)
 
-                case 'Gold YouTube Button':
-                    with st.spinner('Shit, you are really famous...'):
+                case 'Золоту кнопку':
+                    with st.spinner('Генерую...'):
                         gemini_request.edit_images(prompt_gold + f"Channel name is {channel_name}", tmp_path)
+
+                case 'Діамантову кнопку': 
+                    with st.spinner ("Генерую..."): 
+                        time.sleep(2)
+                        st.write("### Забагато Хочеш")
             
             # Display the generated image
             st.image("generated_image.png")
