@@ -26,21 +26,29 @@ def run():
     generate_image = st.button("Додати")
 
     if generate_image and image_file is not None:
-            # Create a temporary file to store the uploaded image
-            with tempfile.NamedTemporaryFile(delete=False, suffix=os.path.splitext(image_file.name)[1]) as tmp_file:
-                tmp_file.write(image_file.getbuffer())
-                tmp_path = tmp_file.name
-
+            
             match genchoice:
                 case 'Пиво':
+                    # Create a temporary file to store the uploaded image
+                    with tempfile.NamedTemporaryFile(delete=False, suffix=os.path.splitext(image_file.name)[1]) as tmp_file:
+                        tmp_file.write(image_file.getbuffer())
+                        tmp_path = tmp_file.name
                     with st.spinner('Наливаю Холодне..'):
                         gemini_request.edit_images(prompt_beer, tmp_path)
 
                 case 'Срібну кнопку':
+                    # Create a temporary file to store the uploaded image
+                    with tempfile.NamedTemporaryFile(delete=False, suffix=os.path.splitext(image_file.name)[1]) as tmp_file:
+                        tmp_file.write(image_file.getbuffer())
+                        tmp_path = tmp_file.name
                     with st.spinner('А чого не золоту?...'):
                         gemini_request.edit_images(prompt_silver + f"Channel name is {channel_name}", tmp_path)
 
                 case 'Золоту кнопку':
+                    # Create a temporary file to store the uploaded image
+                    with tempfile.NamedTemporaryFile(delete=False, suffix=os.path.splitext(image_file.name)[1]) as tmp_file:
+                        tmp_file.write(image_file.getbuffer())
+                        tmp_path = tmp_file.name
                     with st.spinner('Генерую...'):
                         gemini_request.edit_images(prompt_gold + f"Channel name is {channel_name}", tmp_path)
 
