@@ -35,6 +35,8 @@ def run():
                         tmp_path = tmp_file.name
                     with st.spinner('Наливаю Холодне..'):
                         gemini_request.edit_images(prompt_beer, tmp_path)
+                        
+                    st.image("generated_image.png")
 
                 case 'Срібну кнопку':
                     # Create a temporary file to store the uploaded image
@@ -43,6 +45,8 @@ def run():
                         tmp_path = tmp_file.name
                     with st.spinner('А чого не золоту?...'):
                         gemini_request.edit_images(prompt_silver + f"Channel name is {channel_name}", tmp_path)
+                    
+                    st.image("generated_image.png")
 
                 case 'Золоту кнопку':
                     # Create a temporary file to store the uploaded image
@@ -51,14 +55,14 @@ def run():
                         tmp_path = tmp_file.name
                     with st.spinner('Генерую...'):
                         gemini_request.edit_images(prompt_gold + f"Channel name is {channel_name}", tmp_path)
+                    
+                    st.image("generated_image.png")
 
                 case 'Діамантову кнопку': 
                     with st.spinner ("Генерую..."): 
                         time.sleep(2)
                         st.write("### Забагато Хочеш")
             
-            # Display the generated image
-            st.image("generated_image.png")
             if os.path.exists(tmp_path):
                 os.remove(tmp_path)
 run()
